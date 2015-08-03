@@ -1,0 +1,108 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="chapterTenApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/External/ChapterTen/module.js"></script>
+    <script src="~/Scripts/External/ChapterTen/defaultCtrl.js"></script>
+    <style>
+        .odd {
+            background-color: lightcoral;
+        }
+
+        .even {
+            background-color: lavenderblush;
+        }
+    </style>
+
+    <title>Chapter 10 : Using Binding And template Directives</title>
+</head>
+<body>
+    <div id="todoPanel" class="panel" ng-controller="defaultCtrl">
+
+        <h3 class="panel-header">To Do List</h3>
+
+        @*Performing One-Way Bindings (and Preventing Them)*@
+        <div>There are  {{todos.length}} items</div>
+
+        <div>
+            There are <span ng-bind="todos.length"></span> items
+        </div>
+
+        <div ng-bind-template="First:{{todos[0].action}}. Second : {{todos[1].action}} "></div>
+
+        <div ng-non-bindable>
+            Angular js  uses {{ and }}  characters for templates
+        </div>
+        @*End : Performing One-Way Bindings (and Preventing Them)*@
+
+        @*Creating Two-Way Data Bindings*@
+
+        <div class="well">
+            <div>The first item is : {{todos[0].action}}</div>
+        </div>
+
+        <div class="form-group well">
+            <label for="firstItem">Set First item:</label>
+            <input name="firstItem" class="form-control" ng-model="todos[0].action" />
+        </div>
+
+        @*End Creating Two-Way Data Bindings*@
+
+        @*Generating Elements Repeatedly*@
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Action</th>
+                    <th>Done</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in todos" ng-class="$odd?'odd':'even'">
+                    <td>{{$index+1}}</td>
+                    <td>{{item.action}}</td>
+                    @* <td>{{item.complete}}</td>*@
+                    @*<td ng-repeat="prop in item">{{prop}}</td>*@
+                    <td><span ng-if="$first || $last">{{item.complete}}</span></td>
+
+                </tr>
+
+                @*Working with Data Object Keys*@
+                <tr ng-repeat="item in todos">
+                    <td>{{$index+1}}</td>
+                    <td ng-repeat="(key, value) in item">
+                        {{key}}={{value}}
+                    </td>
+                </tr>
+                @*End Working with Data Object Keys*@
+            </tbody>
+        </table>
+        @*End Generating Elements Repeatedly*@
+
+        @*Repeating Multiple Top-Level Elements*@
+        <table class="table">
+            <tbody>
+                <tr ng-repeat-start="item in todos">
+                    <td>This is item {{$index}}</td>
+                </tr>
+                <tr>
+                    <td>The action is: {{item.action}}</td>
+                </tr>
+                <tr ng-repeat-end>
+                    <td>Item {{$index}} is {{$item.complete==true? '' : "not "}} complete</td>
+                </tr>
+            </tbody>
+        </table>
+        @*End Repeating Multiple Top-Level Elements*@
+
+    </div>
+</body>
+</html>
